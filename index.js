@@ -35,47 +35,52 @@ app.post('/hi', (req, res) => {
   });
 });
 
-// app.post('/authors', async(req, res) => {
-//   const {id}=req.params;
-//   const {name,email } = req.body; // Corrected property name
-//   const author = await Author.findById(id);
-//   author.name = name;
-//   author.email=email;
-//   await author.save();
-//   res.json(author);
-// });
+app.post('/authors', async(req, res) => {
+  const {id}=req.params;
+  const {name,email } = req.body; 
+  console.log(name,email);// Corrected property name
+  const author = await Author.find({"name":name});    
+ console.log(author);
+  if(author.length===0){
+      const newAuthor = new Author({"name":name,"email":email});
+      await newAuthor.save();
+      res.json(newAuthor);
+  }else{
+    res.json(author);
+  }
+});
 
 // Get all authors
-app.get('/authors', (req, res) => {
-  Author.find()
-    .then((authors) => res.json(authors))
-    .catch((error) => res.status(500).json({ error: error.message }));
-});
+// app.get('/authors', (req, res) => {
+//   Author.find()
+//     .then((authors) => res.json(authors))
+//     .catch((error) => res.status(500).json({ error: error.message }));
+// });
 
 // Update author by ID
-app.post('/authors/:id', async (req, res) => {
-  const {id} = req.params;
-  const { name, email } = req.body; // Corrected property name
+// app.post('/authors/:id', async (req, res) => {
+//   const {id} = req.params;
+//   const { name, email } = req.body; // Corrected property name
 
-  const author = await Author.findById(id);
+//   const author = await Author.findById(id);
 
-    if (author == null) {
-      res.status(404).json({
-        error: 'Author not found',
-      });
-      return;
-    }
+//     if (author == null) {
+//       res.status(404).json({
+//         error: 'Author not found',
+//       });
+//       return;
+//     }
 
-    author.name = name ;
-    author.email = email; // Corrected property name
+//     author.name = name ;
+//     author.email = email; // Corrected property name
 
-    await author.save();
+//     await author.save();
 
-    res.json(author);
-  // catch (error) {
-  //   return res.status(500).json({ error: error.message });
-  // }
-});
+//     res.json(author);
+//   // catch (error) {
+//   //   return res.status(500).json({ error: error.message });
+//   // }
+// });
 
 app.listen(port, () => {
   console.log(`App running at http://localhost:${port}`);

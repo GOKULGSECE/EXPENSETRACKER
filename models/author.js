@@ -15,4 +15,4 @@ const author = new Schema({
 const author1 = mongoose.model('Author',author)
 //console.log(authorModel.find({}).then((data)=>console.log(data)));
 
-module.exports = author1
+module.exports = author1;
